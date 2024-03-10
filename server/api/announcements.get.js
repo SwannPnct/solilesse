@@ -1,12 +1,21 @@
 export default defineEventHandler(async (event) => {
   const baseURL =
-    "https://bodacc-datadila.opendatasoft.com/api/explore/v2.1/catalog/datasets/annonces-commerciales/records?limit=20";
+    "https://bodacc-datadila.opendatasoft.com/api/explore/v2.1/catalog/datasets/annonces-commerciales/records?";
+
+  const query = getQuery(event);
+  const params = {
+    limit: 20,
+  };
+
+  if (query.city) {
+    params.where = `ville:"${query.city}"`;
+  }
 
   let data;
   let json;
 
   try {
-    data = await fetch(baseURL);
+    data = await fetch(baseURL + new URLSearchParams(params));
     json = await data.json();
   } catch {
     data = {
