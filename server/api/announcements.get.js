@@ -3,12 +3,16 @@ export default defineEventHandler(async (event) => {
     "https://bodacc-datadila.opendatasoft.com/api/explore/v2.1/catalog/datasets/annonces-commerciales/records?";
 
   const query = getQuery(event);
-  const params = {
-    limit: 20,
-  };
+  const params = {};
 
   if (query.city) {
     params.where = `ville:"${query.city}"`;
+  }
+  if (query.limit) {
+    params.limit = query.limit;
+  }
+  if (query.currentPage) {
+    params.offset = (query.currentPage - 1) * query.limit;
   }
 
   let data;
