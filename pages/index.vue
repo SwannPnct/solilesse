@@ -1,4 +1,5 @@
 <script setup>
+    import "vue-multiselect/dist/vue-multiselect.css"; 
     import {
         Card,
         CardContent,
@@ -31,6 +32,7 @@
 
     const {data: announcements, pending, error} = await useFetch('/api/announcements', {
         lazy: true,
+        server: false,
         query: {
             city,
             page,
