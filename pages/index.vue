@@ -1,5 +1,4 @@
 <script setup>
-    import { Input } from '@/components/ui/input'
     import {
         Card,
         CardContent,
@@ -21,61 +20,43 @@
     import {
         Button,
     } from '@/components/ui/button'
+    import { replaceQuery } from '~/lib/utils';
 
     const route = useRoute()
     const city = computed(() => route.query.city)
+    const page = computed(() => route.query.page)
 
     const limit = 21;
-    const currentPage = ref(1);
-    const cityInput = ref(city.value ?? "");
+    const currentPage = ref(page.value ? parseInt(page.value, 10) : 1);
 
     const {data: announcements, pending, error} = await useFetch('/api/announcements', {
         lazy: true,
         query: {
             city,
-            currentPage,
+            page,
             limit
         },
-        key: `announcements-page-${currentPage}`,
-        watch: [currentPage]
+        key: `announcements-page-${page}`,
+        watch: [page]
     })
 
-    const replaceQuery = async (query) => {
-        await navigateTo({
-                path: route.path,
-                replace: true,
-                query: {
-                    ...route.query,
-                    ...query
-                }
-            });
-    }
+    watch(currentPage, async () => {
+        await replaceQuery(route,  {
+            page: currentPage.value
+        })
+    })
 
-    let timeout;
-    watch(cityInput, () => {
-        if(timeout) clearTimeout(timeout);
-        timeout = setTimeout(async () => {
-            currentPage.value = 1;
-            await replaceQuery( {
-                    city: cityInput.value
-                })
-        }, 400);
-    }, {immediate: true})
+    watch(page, () => {
+        if(page !== currentPage) {
+            currentPage.value = parseInt(page.value, 10)
+        }
+    })
 </script>
 
 <template>
     <div class="container py-12 relative">
         <h1 class="font-semibold text-xl mb-16">Solilesse</h1>
-        <div class="mb-16">
-            <h2 class="mb-4">Filters</h2>
-            <div class="flex">
-                <Input 
-                    v-model="cityInput"
-                    placeholder="Ville" 
-                    class="w-1/4 min-w-40"
-                    />
-            </div>
-        </div>
+        <Filters />
         <div v-if="pending">loading...</div>
         <div v-else-if="!!error">
             <strong class="text-red-500">Erreur.</strong>
@@ -94,14 +75,14 @@
                     </Card>
                 </li>
             </ul>
-            <Pagination v-model:page="currentPage" class="mt-16 flex flex-col items-center" v-slot="{ page }" :total="announcements.total_count / limit" :sibling-count="1" show-edges>
+            <Pagination v-model:page="currentPage" class="mt-16 flex flex-col items-center" v-slot="{ page: innerPage }" :total="announcements.total_count / limit" :sibling-count="1" show-edges>
                 <PaginationList v-slot="{ items }" class="flex items-center gap-1">
                     <PaginationFirst />
                     <PaginationPrev />
 
                     <template v-for="(item, index) in items">
                         <PaginationListItem v-if="item.type === 'page'" :key="index" :value="item.value" as-child>
-                        <Button class="w-10 h-10 p-0" :variant="item.value === page ? 'default' : 'outline'">
+                        <Button class="w-10 h-10 p-0" :variant="item.value === innerPage ? 'default' : 'outline'">
                             {{ item.value }}
                         </Button>
                         </PaginationListItem>

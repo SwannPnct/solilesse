@@ -11,8 +11,8 @@ export default defineEventHandler(async (event) => {
   if (query.limit) {
     params.limit = query.limit;
   }
-  if (query.currentPage) {
-    params.offset = (query.currentPage - 1) * query.limit;
+  if (query.page) {
+    params.offset = (query.page - 1) * query.limit;
   }
 
   let data;
