@@ -17,7 +17,8 @@
 
     watch(cityValue, async () => {
         await replaceQuery(route, {
-            city: cityValue.value.value
+            city: cityValue.value.value,
+            page: 1
         })
     })
 </script>
