@@ -29,7 +29,7 @@
             <Multiselect 
                 v-model="cityValue"
                 :options="cities" 
-                placeholder="Choisir une ville" 
+                placeholder="Chercher une ville" 
                 label="label" 
                 track-by="value" 
                 />
@@ -39,10 +39,10 @@
 
 <style>
     .multiselect__option--highlight {
-            background: #111827;
+            background: #111827 !important;
         }
 
     .multiselect__option--highlight:after {
-        background: #111827;
+        background: #111827 !important;
     }
 </style>

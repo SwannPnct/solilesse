@@ -6,7 +6,7 @@
         CardDescription,
         CardHeader,
         CardTitle,
-    } from '@/components/ui/card'
+    } from '@/components/ui/card';
     import {
         Pagination,
         PaginationEllipsis,
@@ -16,11 +16,11 @@
         PaginationListItem,
         PaginationNext,
         PaginationPrev,
-    } from '@/components/ui/pagination'
+    } from '@/components/ui/pagination';
 
     import {
         Button,
-    } from '@/components/ui/button'
+    } from '@/components/ui/button';
     import { replaceQuery } from '~/lib/utils';
 
     const route = useRoute()
@@ -28,6 +28,8 @@
     const page = computed(() => route.query.page)
 
     const limit = 21;
+    const orderBy = "parution DESC";
+
     const currentPage = ref(page.value ? parseInt(page.value, 10) : 1);
 
     const {data: announcements, pending, error} = await useFetch('/api/announcements', {
@@ -36,7 +38,8 @@
         query: {
             city,
             page,
-            limit
+            limit,
+            orderBy
         },
         key: `announcements-page-${page}`,
         watch: [page]
@@ -68,11 +71,14 @@
                 <li v-for="announcement in announcements.results" :key="announcement.id">
                     <Card class="w-[350px]">
                         <CardHeader>
-                            <CardTitle>{{ announcement.commercant }}</CardTitle>
+                            <CardTitle class="text-lg">{{ announcement.commercant }}</CardTitle>
                             <CardDescription>{{ announcement.id }}</CardDescription>
                         </CardHeader>
-                        <CardContent>
-                            <span>Ville: {{  announcement.ville }}</span>
+                        <CardContent class="announcement__card-content">
+                            <p><span>Date de parution:</span> {{ announcement.dateparution }}</p>
+                            <p><span>Ville:</span> {{  announcement.ville }}</p>
+                            <p><span>Type:</span> {{ announcement.typeavis_lib }}</p>
+                            <p><span>Famille:</span> {{ announcement.familleavis_lib }}</p>
                         </CardContent>
                     </Card>
                 </li>
@@ -101,3 +107,9 @@
         </div>
     </div>
 </template>
+
+<style>
+    .announcement__card-content p span {
+        @apply font-semibold;
+    }
+</style>

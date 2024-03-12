@@ -6,8 +6,6 @@ export default defineEventHandler(async () => {
   let data;
   let json;
 
-  console.log(new URLSearchParams(params));
-
   try {
     data = await fetch(baseURL + new URLSearchParams(params));
     json = await data.json();

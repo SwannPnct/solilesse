@@ -11,6 +11,9 @@ export default defineEventHandler(async (event) => {
   if (query.limit) {
     params.limit = query.limit;
   }
+  if (query.orderBy) {
+    params.order_by = query.orderBy;
+  }
   if (query.page) {
     params.offset = (query.page - 1) * query.limit;
   }
