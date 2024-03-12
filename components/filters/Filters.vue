@@ -5,6 +5,18 @@
     const route = useRoute()
     const cityQuery = computed(() => route.query.city)
     const cityValue = ref(cityQuery.value ? {value: cityQuery.value, label: cityQuery.value} : '')
+    const familyQuery = computed(() => route.query.family)
+    const familyValue = ref(familyQuery.value ? {value: familyQuery.value, label: familyQuery.value} : '')
+
+    const families = [
+        'Radiations',
+        'Dépôts des comptes',
+        'Créations',
+        'Modifications diverses',
+        'Procédures collectives',
+        'Immatriculations',
+        'Ventes et cessions'
+    ]
 
     const {data: cities} = useFetch('/api/cities', {
         lazy: true,
@@ -17,7 +29,14 @@
 
     watch(cityValue, async () => {
         await replaceQuery(route, {
-            city: cityValue.value.value,
+            city: cityValue.value?.value ?? "",
+            page: 1
+        })
+    })
+
+    watch(familyValue, async () => {
+        await replaceQuery(route, {
+            family: familyValue.value?.value ?? "",
             page: 1
         })
     })
@@ -26,7 +45,7 @@
 <template>
     <div class="mb-16">
         <h2 class="mb-4">Filters</h2>
-        <div>
+        <div class="flex gap-12">
             <Multiselect 
                 v-model="cityValue"
                 :options="cities" 
@@ -34,6 +53,14 @@
                 label="label" 
                 track-by="value" 
                 />
+            <Multiselect 
+                v-model="familyValue"
+                :options="families.map((v) => ({label: v, value: v}))" 
+                placeholder="Sélectionner une famille d'avis" 
+                label="label" 
+                track-by="value" 
+                :searchable="false"
+            />
         </div>
     </div>
 </template>

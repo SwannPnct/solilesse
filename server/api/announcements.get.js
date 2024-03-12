@@ -5,8 +5,12 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   const params = {};
 
-  if (query.city) {
+  if (query.city && !query.family) {
     params.where = `ville:"${query.city}"`;
+  } else if (query.city && query.family) {
+    params.where = `ville:"${query.city}" AND familleavis_lib:"${query.family}"`;
+  } else if (query.family && !query.city) {
+    params.where = `familleavis_lib:"${query.family}"`;
   }
   if (query.limit) {
     params.limit = query.limit;
