@@ -4,7 +4,11 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     ['@nuxtjs/eslint-module', { /* module options */ }],
-    'shadcn-nuxt'
+    'shadcn-nuxt',
+    '@pinia/nuxt'
   ],
-  css: ['~/assets/css/tailwind.css']
+  css: ['~/assets/css/tailwind.css'],
+  imports: {
+    dirs: ['stores']
+  }
 })

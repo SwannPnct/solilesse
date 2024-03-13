@@ -23,6 +23,8 @@
     } from '@/components/ui/button';
     import { replaceQuery } from '~/lib/utils';
 
+    const announcements = useAnnouncements();
+
     const route = useRoute()
     const city = computed(() => route.query.city)
     const page = computed(() => route.query.page)
@@ -33,19 +35,21 @@
 
     const currentPage = ref(page.value ? parseInt(page.value, 10) : 1);
 
-    const {data: announcements, pending, error} = await useFetch('/api/announcements', {
-        lazy: true,
-        server: false,
-        query: {
-            city,
-            page,
-            limit,
-            orderBy,
-            family
-        },
-        key: `announcements-page-${page}`,
-        watch: [page]
-    })
+    const query = computed(() => ({
+        city: city.value,
+        page: page.value,
+        family: family.value,
+        limit,
+        orderBy
+    }))
+    const {pending, error} = await useAsyncData(
+        `announcements?${new URLSearchParams(query.value)}`, 
+        () => announcements.fetchAnnouncements(query.value), 
+        {
+            lazy: true,
+            server: false,
+            watch: [query]
+        })
 
     watch(currentPage, async () => {
         await replaceQuery(route,  {
@@ -64,11 +68,11 @@
     <Filters />
     <div v-if="pending">loading...</div>
     <div v-else-if="!!error">
-        <strong class="text-red-500">Erreur.</strong>
+        <strong class="text-red-500">{{ error }}</strong>
     </div>
-    <template v-else-if="!!announcements.results.length">
+    <template v-else-if="!!announcements.announcements.results?.length">
         <ul  class="flex flex-wrap gap-8 gap-x-16 items-center">
-            <li v-for="announcement in announcements.results" :key="announcement.id">
+            <li v-for="announcement in announcements.announcements.results" :key="announcement.id">
                 <Card class="w-[350px]">
                     <CardHeader>
                         <CardTitle class="text-lg">{{ announcement.commercant }}</CardTitle>
@@ -83,7 +87,7 @@
                 </Card>
             </li>
         </ul>
-        <Pagination v-model:page="currentPage" class="mt-16 flex flex-col items-center" v-slot="{ page: innerPage }" :total="announcements.total_count / limit" :sibling-count="1" show-edges>
+        <Pagination v-model:page="currentPage" class="mt-16 flex flex-col items-center" v-slot="{ page: innerPage }" :total="announcements.announcements.total_count / limit" :sibling-count="1" show-edges>
             <PaginationList v-slot="{ items }" class="flex items-center gap-1">
                 <PaginationFirst />
                 <PaginationPrev />
