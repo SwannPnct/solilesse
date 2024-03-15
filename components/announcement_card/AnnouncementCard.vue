@@ -7,12 +7,27 @@
         CardTitle,
     } from '@/components/ui/card';
 
-   defineProps(['announcement'])
+   defineProps(['announcement']);
+
+   const clicked = ref(false)
+   const li = ref(null)
+
+   onMounted(() => {
+    document.addEventListener('click', (e) => {
+        if(!li.value.contains(e.target) && clicked.value) {
+            clicked.value = false;
+        }
+    })
+   })
+
+   const onItemClick = () => {
+    if(!clicked.value) clicked.value = true;
+   }
 </script>
 
 <template>
-    <li>
-        <Card class="w-[350px]">
+    <li ref="li" :class="'self-start transition-all duration-700 w-[350px] ' + (!clicked ? 'h-[225px]' : 'h-[450px]') " @click="onItemClick">
+        <Card class="size-full transition-all hover:shadow-lg cursor-pointer">
             <CardHeader>
                 <CardTitle class="text-lg">{{ announcement.commercant }}</CardTitle>
                 <CardDescription>{{ announcement.id }}</CardDescription>

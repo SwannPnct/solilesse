@@ -66,7 +66,7 @@
     <template v-else-if="!!announcements.announcements.results?.length">
         <ul  class="flex flex-wrap gap-8 gap-x-16 items-center">
             <template v-for="announcement in announcements.announcements.results" :key="announcement.id">
-                <AnnouncementCard  :announcement="announcement"/>
+                <AnnouncementCard  :announcement/>
             </template>
         </ul>
         <Pagination v-model:page="currentPage" class="mt-16 flex flex-col items-center" v-slot="{ page: innerPage }" :total="announcements.announcements.total_count / limit" :sibling-count="1" show-edges>
