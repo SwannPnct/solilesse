@@ -1,13 +1,6 @@
 <script setup>
     import "vue-multiselect/dist/vue-multiselect.css"; 
     import {
-        Card,
-        CardContent,
-        CardDescription,
-        CardHeader,
-        CardTitle,
-    } from '@/components/ui/card';
-    import {
         Pagination,
         PaginationEllipsis,
         PaginationFirst,
@@ -72,20 +65,9 @@
     </div>
     <template v-else-if="!!announcements.announcements.results?.length">
         <ul  class="flex flex-wrap gap-8 gap-x-16 items-center">
-            <li v-for="announcement in announcements.announcements.results" :key="announcement.id">
-                <Card class="w-[350px]">
-                    <CardHeader>
-                        <CardTitle class="text-lg">{{ announcement.commercant }}</CardTitle>
-                        <CardDescription>{{ announcement.id }}</CardDescription>
-                    </CardHeader>
-                    <CardContent class="announcement__card-content">
-                        <p><span>Date de parution:</span> {{ announcement.dateparution }}</p>
-                        <p><span>Ville:</span> {{  announcement.ville }}</p>
-                        <p><span>Type:</span> {{ announcement.typeavis_lib }}</p>
-                        <p><span>Famille:</span> {{ announcement.familleavis_lib }}</p>
-                    </CardContent>
-                </Card>
-            </li>
+            <template v-for="announcement in announcements.announcements.results" :key="announcement.id">
+                <AnnouncementCard  :announcement="announcement"/>
+            </template>
         </ul>
         <Pagination v-model:page="currentPage" class="mt-16 flex flex-col items-center" v-slot="{ page: innerPage }" :total="announcements.announcements.total_count / limit" :sibling-count="1" show-edges>
             <PaginationList v-slot="{ items }" class="flex items-center gap-1">
