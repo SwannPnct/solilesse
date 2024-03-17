@@ -1,5 +1,4 @@
 <script setup>
-    import "vue-multiselect/dist/vue-multiselect.css"; 
     import {
         Pagination,
         PaginationEllipsis,
@@ -33,8 +32,9 @@
         page: page.value,
         family: family.value,
         limit,
-        orderBy
-    }))
+        orderBy,
+    }));
+
     const {pending, error} = await useAsyncData(
         `announcements?${new URLSearchParams(query.value)}`, 
         () => announcements.fetchAnnouncements(query.value), 
@@ -92,9 +92,3 @@
         No results
     </div>
 </template>
-
-<style>
-    .announcement__card-content p span {
-        @apply font-semibold;
-    }
-</style>

@@ -1,4 +1,5 @@
 <script setup>
+    import "vue-multiselect/dist/vue-multiselect.css"; 
     import Multiselect from 'vue-multiselect'
     import { replaceQuery } from '@/lib/utils';
 
@@ -9,11 +10,7 @@
     const familyValue = ref(familyQuery.value ? {value: familyQuery.value, label: familyQuery.value} : '')
 
     const families = [
-        'Radiations',
-        'Dépôts des comptes',
         'Créations',
-        'Modifications diverses',
-        'Procédures collectives',
         'Immatriculations',
         'Ventes et cessions'
     ]
