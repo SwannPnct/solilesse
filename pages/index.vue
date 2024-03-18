@@ -21,6 +21,7 @@
     const city = computed(() => route.query.city)
     const page = computed(() => route.query.page)
     const family = computed(() => route.query.family)
+    const reset = computed(() => route.query.reset)
 
     const limit = 21;
     const orderBy = "parution DESC";
@@ -31,12 +32,13 @@
         city: city.value,
         page: page.value,
         family: family.value,
+        reset: reset.value,
         limit,
-        orderBy,
+        orderBy
     }));
 
     const {pending, error} = await useAsyncData(
-        `announcements?${new URLSearchParams(query.value)}`, 
+        "announcements", 
         () => announcements.fetchAnnouncements(query.value), 
         {
             lazy: true,
@@ -48,6 +50,7 @@
         await replaceQuery(route,  {
             page: currentPage.value
         })
+        window.scrollTo({top: 0})
     })
 
     watch(page, () => {
@@ -63,13 +66,13 @@
     <div v-else-if="!!error">
         <strong class="text-red-500">{{ error }}</strong>
     </div>
-    <template v-else-if="!!announcements.announcements.results?.length">
+    <template v-else-if="!!announcements.announcements.total">
         <ul  class="flex flex-wrap gap-8 gap-x-16 items-center">
-            <template v-for="announcement in announcements.announcements.results" :key="announcement.id">
+            <template v-for="announcement in announcements.announcements.pages[currentPage]" :key="announcement.id">
                 <AnnouncementCard  :announcement/>
             </template>
         </ul>
-        <Pagination v-model:page="currentPage" class="mt-16 flex flex-col items-center" v-slot="{ page: innerPage }" :total="announcements.announcements.total_count / limit" :sibling-count="1" show-edges>
+        <Pagination v-model:page="currentPage" class="mt-16 flex flex-col items-center" v-slot="{ page: innerPage }" :total="announcements.announcements.total / limit" :sibling-count="1" show-edges>
             <PaginationList v-slot="{ items }" class="flex items-center gap-1">
                 <PaginationFirst />
                 <PaginationPrev />

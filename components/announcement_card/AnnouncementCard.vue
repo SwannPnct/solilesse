@@ -30,7 +30,7 @@
     })
    }
 
-   const buildAdress = (adressObj) => {
+   const buildAddress = (adressObj) => {
     return Object.values(adressObj).join(' ')
    }
 </script>
@@ -51,7 +51,7 @@
 
                 <div v-show="clicked" class="mt-4">
                     <p><span>Type:</span> {{ announcement.typeavis_lib }}</p>
-                    <p><span>Type:</span> {{ buildAdress(establishment.etablissement.adresse) }}</p>
+                    <p v-if="!!establishment.etablissement.adresse"><span>Adresse:</span> {{ buildAddress(establishment.etablissement.adresse) }}</p>
                 </div>
             </CardContent>
         </Card>

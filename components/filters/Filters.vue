@@ -27,14 +27,16 @@
     watch(cityValue, async () => {
         await replaceQuery(route, {
             city: cityValue.value?.value ?? "",
-            page: 1
+            page: 1,
+            reset: true
         })
     })
 
     watch(familyValue, async () => {
         await replaceQuery(route, {
             family: familyValue.value?.value ?? "",
-            page: 1
+            page: 1,
+            reset: true
         })
     })
 </script>
