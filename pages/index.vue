@@ -23,7 +23,7 @@
     const family = computed(() => route.query.family)
     const reset = computed(() => route.query.reset)
 
-    const limit = 21;
+    const limit = 3;
     const orderBy = "parution DESC";
 
     const currentPage = ref(page.value ? parseInt(page.value, 10) : 1);
@@ -72,7 +72,7 @@
                 <AnnouncementCard  :announcement/>
             </template>
         </ul>
-        <Pagination v-model:page="currentPage" class="mt-16 flex flex-col items-center" v-slot="{ page: innerPage }" :total="announcements.announcements.total / limit" :sibling-count="1" show-edges>
+        <Pagination v-model:page="currentPage" class="mt-16 flex flex-col items-center" v-slot="{ page: innerPage }" :itemsPerPage="limit" :total="announcements.announcements.total" :sibling-count="1" show-edges>
             <PaginationList v-slot="{ items }" class="flex items-center gap-1">
                 <PaginationFirst />
                 <PaginationPrev />

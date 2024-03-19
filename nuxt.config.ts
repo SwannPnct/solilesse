@@ -10,5 +10,11 @@ export default defineNuxtConfig({
   css: ['~/assets/css/tailwind.css'],
   imports: {
     dirs: ['stores']
+  },
+  runtimeConfig: {
+    public: {
+      dbName: "SOLILESSE",
+      dbVersion: 1,
+    }
   }
 })

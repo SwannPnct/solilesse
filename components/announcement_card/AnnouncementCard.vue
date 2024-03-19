@@ -1,12 +1,5 @@
 <script setup>
-     import {
-        Card,
-        CardContent,
-        CardDescription,
-        CardHeader,
-        CardTitle,
-    } from '@/components/ui/card';
-
+    const announcements = useAnnouncements()
    const props = defineProps(['announcement']);
 
    const clicked = ref(false)
@@ -23,11 +16,18 @@
    })
 
    const onItemClick = () => {
-    if(!clicked.value) clicked.value = true;
-    li.value.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
-    })
+    if(!clicked.value) {
+        clicked.value = true
+        li.value.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        })
+    };
+   }
+
+   const onItemDelete = async (e) => {
+    e.stopPropagation();
+    await announcements.deleteAccouncement(props.announcement)
    }
 
    const buildAddress = (adressObj) => {
@@ -54,6 +54,9 @@
                     <p v-if="!!establishment.etablissement.adresse"><span>Adresse:</span> {{ buildAddress(establishment.etablissement.adresse) }}</p>
                 </div>
             </CardContent>
+            <CardFooter>
+                <Button @click="onItemDelete">Delete</Button>
+            </CardFooter>
         </Card>
     </li>
 </template>

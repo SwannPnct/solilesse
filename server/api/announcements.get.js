@@ -6,6 +6,15 @@ export default defineEventHandler(async (event) => {
   const params = {};
 
   const whereItems = ["listeetablissements is not null"];
+  if (query.deleted) {
+    if (typeof query.deleted === "string") {
+      whereItems.push(`NOT id:"${query.deleted}"`);
+    } else {
+      query.deleted.forEach((id) => {
+        whereItems.push(`NOT id:"${id}"`);
+      });
+    }
+  }
   if (query.city) {
     whereItems.push(`ville:"${query.city}"`);
   }
