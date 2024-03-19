@@ -1,4 +1,6 @@
 <script setup>
+    import { TrashIcon } from '@radix-icons/vue'
+
     const announcements = useAnnouncements()
    const props = defineProps(['announcement']);
 
@@ -54,8 +56,8 @@
                     <p v-if="!!establishment.etablissement.adresse"><span>Adresse:</span> {{ buildAddress(establishment.etablissement.adresse) }}</p>
                 </div>
             </CardContent>
-            <CardFooter>
-                <Button @click="onItemDelete">Delete</Button>
+            <CardFooter class="justify-end">
+                <Button @click="onItemDelete" variant="destructive" title="Supprimer"><TrashIcon /></Button>
             </CardFooter>
         </Card>
     </li>
