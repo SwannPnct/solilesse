@@ -41,13 +41,25 @@ import useCurrentPage from '~/composables/useCurrentPage';
     </div>
     <div v-else>
         <Paginator :limit/>
-        <div v-if="pending">
-            Loading...
+        <div v-if="pending" class="flex flex-wrap gap-16 items-center">
+            <div  v-for="_ in Array(limit)"  class="border border-gray-200 rounded-lg w-[350px] p-4 animate-pulse flex flex-col gap-4">
+                <div class="mb-4 space-y-2">
+                    <Skeleton class="h-6 w-[250px]" />
+                    <Skeleton class="h-4 w-[150px]" />
+                </div>
+                <div class="space-y-2">
+                    <Skeleton class="h-5 w-[60px]" />
+                    <Skeleton class="h-5 w-[60px]" />
+                    <Skeleton class="h-5 w-[230px]" />
+                    <Skeleton class="h-[70px] w-[300px]" />
+                </div>
+        </div>
         </div>
         <TransitionGroup v-else name="list" tag="ul" class="relative flex flex-wrap gap-16 items-center">
-            <template v-for="announcement in announcements.announcements.pages[currentPage]" :key="announcement.id">
-                <AnnouncementCard  :announcement/>
-            </template>
+            <AnnouncementCard 
+                v-for="announcement in announcements.announcements.pages[currentPage]" 
+                :key="announcement.id" 
+                :announcement />
         </TransitionGroup>
         <Paginator :limit/>
     </div>
