@@ -26,9 +26,11 @@ export const handleDB = async (onOpen: (db: IDBPDatabase<unknown>, keys: typeof 
   const rc = useRuntimeConfig();
   const db = await openDB(rc.public.dbName, rc.public.dbVersion, {
     upgrade(db) {
-      db.createObjectStore(storeKeys.DELETED, {
+      const deletedStore = db.createObjectStore(storeKeys.DELETED, {
         keyPath: "id",
       });
+
+      deletedStore.createIndex('datesupprimee', 'datesupprimee')
     },
   });
 

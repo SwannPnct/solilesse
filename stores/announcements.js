@@ -62,6 +62,7 @@ export const useAnnouncements = defineStore("announcements", () => {
         ville,
         familleavis_lib,
         listeetablissements,
+        datesupprimee: new Date(),
       });
     });
 
