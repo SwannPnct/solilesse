@@ -46,9 +46,23 @@ export const useAnnouncements = defineStore("announcements", () => {
     return true;
   };
 
-  const deleteAccouncement = async ({ id, dateparution, commercant }) => {
+  const deleteAccouncement = async ({
+    id,
+    dateparution,
+    commercant,
+    ville,
+    familleavis_lib,
+    listeetablissements,
+  }) => {
     await handleDB(async (db, keys) => {
-      await db.put(keys.DELETED, { id, dateparution, commercant });
+      await db.put(keys.DELETED, {
+        id,
+        dateparution,
+        commercant,
+        ville,
+        familleavis_lib,
+        listeetablissements,
+      });
     });
 
     let targetPage;

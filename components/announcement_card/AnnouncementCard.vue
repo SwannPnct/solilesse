@@ -48,7 +48,7 @@
                 <p><span>Date de parution:</span> {{ announcement.dateparution }}</p>
                 <p><span>Ville:</span> {{  announcement.ville }}</p>
                 <p><span>Famille:</span> {{ announcement.familleavis_lib }}</p>
-                <p><span>Activité:</span> {{ establishment.etablissement.activite }}</p>
+                <p :class="clicked ? 'line-clamp-none' : 'line-clamp-4'"><span>Activité:</span> {{ establishment.etablissement.activite }}</p>
 
 
                 <div v-show="clicked" class="mt-4">
@@ -57,7 +57,9 @@
                 </div>
             </CardContent>
             <CardFooter class="justify-end">
-                <Button @click="onItemDelete" variant="destructive" title="Supprimer"><TrashIcon /></Button>
+                <Button @click="onItemDelete" variant="outline" title="Supprimer" class="border-red-500 text-red-500 hover:bg-red-100 hover:text-red-600">
+                    <TrashIcon />
+                </Button>
             </CardFooter>
         </Card>
     </li>
