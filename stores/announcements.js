@@ -5,14 +5,18 @@ export const useAnnouncements = defineStore("announcements", () => {
     total: 0,
     pages: {},
   });
+  const lastQuery = ref({});
 
   const fetchAnnouncements = async (query) => {
+    lastQuery.value = query;
+
     if (query.reset === "true") {
       resetAnnouncements();
       const route = useRoute();
       await replaceQuery(route, {
         reset: false,
       });
+      return true;
     }
 
     await handleDB(async (db, keys) => {
@@ -43,6 +47,8 @@ export const useAnnouncements = defineStore("announcements", () => {
       });
       announcements.value.pages[nextPage] = data.results;
     }
+
+    query.deleted = undefined;
     return true;
   };
 
@@ -81,16 +87,16 @@ export const useAnnouncements = defineStore("announcements", () => {
       );
     });
 
-    Object.keys(announcements.value.pages).forEach((page) => {
-      if (parseInt(page, 10) > targetPage) {
-        announcements.value.pages[page - 1].push(
-          announcements.value.pages[page][0]
-        );
-        announcements.value.pages[page].splice(0, 1);
-      }
-    });
+    if (announcements.value.pages[targetPage + 1]) {
+      announcements.value.pages[targetPage].push(
+        announcements.value.pages[targetPage + 1][0]
+      );
+    }
 
     announcements.value.total--;
+
+    resetNextAnnouncements(targetPage);
+    fetchAnnouncements(lastQuery.value);
 
     return true;
   };
@@ -100,6 +106,14 @@ export const useAnnouncements = defineStore("announcements", () => {
       total: 0,
       pages: {},
     };
+  };
+
+  const resetNextAnnouncements = (fromPage) => {
+    Object.keys(announcements.value.pages).forEach((page) => {
+      if (parseInt(page, 10) > fromPage) {
+        announcements.value.pages[page] = undefined;
+      }
+    });
   };
 
   return {

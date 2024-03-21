@@ -8,7 +8,7 @@ import useCurrentPage from '~/composables/useCurrentPage';
     const family = computed(() => route.query.family)
     const reset = computed(() => route.query.reset)
 
-    const limit = 21;
+    const limit = 3;
     const orderBy = "parution DESC";
 
     const {page, currentPage} = useCurrentPage();
@@ -33,6 +33,8 @@ import useCurrentPage from '~/composables/useCurrentPage';
 </script>
 
 <template>
+    {{ console.log('pending', pending) }}
+    {{ console.log('data', announcements.announcements.pages) }}
     <Filters />
     <div v-if="!!error">
         <strong class="text-red-500">
