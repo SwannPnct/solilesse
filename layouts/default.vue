@@ -1,8 +1,24 @@
 <script setup>
-   const links = [
+   const route = useRoute()
+   const query = computed(() => route.query)
+   const fullPath = computed(() => route.fullPath)
+   const path = computed(() => route.path)
+
+   const links = ref([
       ["/annonces", "Annonces"],
       ["/supprimees", "Supprimées"]
-   ]
+      ].map(mapLinks))
+
+   watch([query, fullPath, path], () => {
+      links.value = links.value.map(mapLinks)
+   })
+
+   function mapLinks(link) {
+      if(link[0].includes(path.value)) {
+            return [fullPath.value, link[1]]
+         }
+         return [...link]
+   }
 </script>
 
 <template>
