@@ -19,7 +19,8 @@ export const replaceQuery = async (route: RouteLocationNormalizedLoaded, query: 
 }
 
 const storeKeys = {
-  DELETED: "deleted"
+  DELETED: "deleted",
+  FAV: 'fav'
 }
 
 export const handleDB = async (onOpen: (db: IDBPDatabase<unknown>, keys: typeof storeKeys) => Promise<void>) => {
@@ -29,8 +30,12 @@ export const handleDB = async (onOpen: (db: IDBPDatabase<unknown>, keys: typeof 
       const deletedStore = db.createObjectStore(storeKeys.DELETED, {
         keyPath: "id",
       });
-
       deletedStore.createIndex('datesupprimee', 'datesupprimee')
+
+      const favStore = db.createObjectStore(storeKeys.FAV, {
+        keyPath: "id",
+      });
+      favStore.createIndex('dateajoutee', 'dateajoutee')
     },
   });
 

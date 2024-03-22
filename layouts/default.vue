@@ -6,7 +6,8 @@
 
    const links = ref([
       ["/annonces", "Annonces"],
-      ["/supprimees", "Supprimées"]
+      ["/supprimees", "Supprimées"],
+      ["/favories", "Favories"]
       ].map(mapLinks))
 
    watch([query, fullPath, path], () => {

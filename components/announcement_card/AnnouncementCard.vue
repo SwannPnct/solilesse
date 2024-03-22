@@ -1,5 +1,5 @@
 <script setup>
-    import { TrashIcon } from '@radix-icons/vue'
+    import { TrashIcon, StarIcon } from '@radix-icons/vue'
 
     const announcements = useAnnouncements()
    const props = defineProps(['announcement']);
@@ -32,6 +32,11 @@
     await announcements.deleteAccouncement(props.announcement)
    }
 
+   const onItemFav = async (e) => {
+    e.stopPropagation();
+    await announcements.favAnnouncement(props.announcement)
+   }
+
    const buildAddress = (adressObj) => {
     return Object.values(adressObj).join(' ')
    }
@@ -56,9 +61,12 @@
                     <p v-if="!!establishment.etablissement.adresse"><span>Adresse:</span> {{ buildAddress(establishment.etablissement.adresse) }}</p>
                 </div>
             </CardContent>
-            <CardFooter class="justify-end">
+            <CardFooter class="justify-end space-x-4">
                 <Button @click="onItemDelete" variant="outline" title="Supprimer" class="border-red-500 text-red-500 hover:bg-red-100 hover:text-red-600">
                     <TrashIcon />
+                </Button>
+                <Button @click="onItemFav" variant="outline" title="Ajouter aux favories" class="border-green-500 text-green-500 hover:bg-green-100 hover:text-green-600">
+                    <StarIcon />
                 </Button>
             </CardFooter>
         </Card>

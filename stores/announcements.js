@@ -23,6 +23,10 @@ export const useAnnouncements = defineStore("announcements", () => {
       query.deleted = await db.getAllKeys(keys.DELETED);
     });
 
+    await handleDB(async (db, keys) => {
+      query.fav = await db.getAllKeys(keys.FAV);
+    });
+
     const page = query.page ? parseInt(query.page, 10) : 1;
 
     if (!announcements.value.pages[page]) {
@@ -49,6 +53,7 @@ export const useAnnouncements = defineStore("announcements", () => {
     }
 
     query.deleted = undefined;
+    query.fav = undefined;
     return true;
   };
 
@@ -72,6 +77,52 @@ export const useAnnouncements = defineStore("announcements", () => {
       });
     });
 
+    _removeFromAnnouncements(id);
+
+    return true;
+  };
+
+  const favAnnouncement = async ({
+    id,
+    dateparution,
+    commercant,
+    ville,
+    familleavis_lib,
+    listeetablissements,
+  }) => {
+    await handleDB(async (db, keys) => {
+      await db.put(keys.FAV, {
+        id,
+        dateparution,
+        commercant,
+        ville,
+        familleavis_lib,
+        listeetablissements,
+        dateajoutee: new Date(),
+      });
+    });
+
+    _removeFromAnnouncements(id);
+
+    return true;
+  };
+
+  const resetAnnouncements = () => {
+    announcements.value = {
+      total: 0,
+      pages: {},
+    };
+  };
+
+  const _resetNextAnnouncements = (fromPage) => {
+    Object.keys(announcements.value.pages).forEach((page) => {
+      if (parseInt(page, 10) > fromPage) {
+        announcements.value.pages[page] = undefined;
+      }
+    });
+  };
+
+  const _removeFromAnnouncements = (id) => {
     let targetPage;
 
     Object.keys(announcements.value.pages).forEach((page) => {
@@ -95,31 +146,15 @@ export const useAnnouncements = defineStore("announcements", () => {
 
     announcements.value.total--;
 
-    resetNextAnnouncements(targetPage);
+    _resetNextAnnouncements(targetPage);
     fetchAnnouncements(lastQuery.value);
-
-    return true;
-  };
-
-  const resetAnnouncements = () => {
-    announcements.value = {
-      total: 0,
-      pages: {},
-    };
-  };
-
-  const resetNextAnnouncements = (fromPage) => {
-    Object.keys(announcements.value.pages).forEach((page) => {
-      if (parseInt(page, 10) > fromPage) {
-        announcements.value.pages[page] = undefined;
-      }
-    });
   };
 
   return {
     announcements,
     fetchAnnouncements,
     deleteAccouncement,
+    favAnnouncement,
     resetAnnouncements,
   };
 });

@@ -15,6 +15,15 @@ export default defineEventHandler(async (event) => {
       });
     }
   }
+  if (query.fav) {
+    if (typeof query.fav === "string") {
+      whereItems.push(`NOT id:"${query.fav}"`);
+    } else {
+      query.fav.forEach((id) => {
+        whereItems.push(`NOT id:"${id}"`);
+      });
+    }
+  }
   if (query.city) {
     whereItems.push(`ville:"${query.city}"`);
   }
