@@ -14,7 +14,7 @@
    })
 
    function mapLinks(link) {
-      if(link[0].includes(path.value)) {
+      if(link[0].includes(path.value) && path.value !== "/") {
             return [fullPath.value, link[1]]
          }
          return [...link]
