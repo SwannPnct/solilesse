@@ -1,5 +1,5 @@
 <script setup>
-    import { TrashIcon, StarIcon } from '@radix-icons/vue'
+    import { TrashIcon, StarIcon, CaretDownIcon, CaretUpIcon } from '@radix-icons/vue'
 
     const announcements = useAnnouncements()
    const props = defineProps(['announcement']);
@@ -18,13 +18,11 @@
    })
 
    const onItemClick = () => {
-    if(!clicked.value) {
-        clicked.value = true
+        clicked.value = !clicked.value
         li.value.scrollIntoView({
             behavior: 'smooth',
             block: 'center'
         })
-    };
    }
 
    const onItemDelete = async (e) => {
@@ -61,13 +59,19 @@
                     <p v-if="!!establishment.etablissement.adresse"><span>Adresse:</span> {{ buildAddress(establishment.etablissement.adresse) }}</p>
                 </div>
             </CardContent>
-            <CardFooter class="justify-end space-x-4">
-                <Button @click="onItemDelete" variant="outline" title="Supprimer" class="border-red-500 text-red-500 hover:bg-red-100 hover:text-red-600">
-                    <TrashIcon />
-                </Button>
-                <Button @click="onItemFav" variant="outline" title="Ajouter aux favories" class="border-green-500 text-green-500 hover:bg-green-100 hover:text-green-600">
-                    <StarIcon />
-                </Button>
+            <CardFooter class="flex flex-col gap-4">
+                <div class="w-full flex justify-end gap-4">
+                    <Button @click="onItemDelete" variant="outline" title="Supprimer" class="border-red-500 text-red-500 hover:bg-red-100 hover:text-red-600">
+                        <TrashIcon />
+                    </Button>
+                    <Button @click="onItemFav" variant="outline" title="Ajouter aux favories" class="border-green-500 text-green-500 hover:bg-green-100 hover:text-green-600">
+                        <StarIcon />
+                    </Button>
+                </div>
+                <div class="w-full flex justify-center">
+                    <CaretUpIcon v-if="clicked" class="size-6"/>
+                    <CaretDownIcon v-else class="size-6"/>
+                </div>
             </CardFooter>
         </Card>
     </li>

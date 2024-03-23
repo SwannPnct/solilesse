@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <Card>
+    <Card class="bg-gray-100">
         <CardContent class="flex justify-between items-center p-6">
                 <CardTitle class="text-lg">{{ announcement.commercant }}</CardTitle>
                 <CardDescription>{{ announcement.id }}</CardDescription>
