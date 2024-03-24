@@ -64,6 +64,7 @@ export const useAnnouncements = defineStore("announcements", () => {
     ville,
     familleavis_lib,
     listeetablissements,
+    listepersonnes,
   }) => {
     await handleDB(async (db, keys) => {
       await db.put(keys.DELETED, {
@@ -73,6 +74,7 @@ export const useAnnouncements = defineStore("announcements", () => {
         ville,
         familleavis_lib,
         listeetablissements,
+        listepersonnes,
         datesupprimee: new Date(),
       });
     });
@@ -89,6 +91,7 @@ export const useAnnouncements = defineStore("announcements", () => {
     ville,
     familleavis_lib,
     listeetablissements,
+    listepersonnes,
   }) => {
     await handleDB(async (db, keys) => {
       await db.put(keys.FAV, {
@@ -98,6 +101,7 @@ export const useAnnouncements = defineStore("announcements", () => {
         ville,
         familleavis_lib,
         listeetablissements,
+        listepersonnes,
         dateajoutee: new Date(),
       });
     });

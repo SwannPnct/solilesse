@@ -29,10 +29,46 @@ export const useDeletedAnnouncements = defineStore(
       });
     };
 
+    const favAnnouncement = async ({
+      id,
+      dateparution,
+      commercant,
+      ville,
+      familleavis_lib,
+      listeetablissements,
+      listepersonnes,
+    }) => {
+      await handleDB(async (db, keys) => {
+        await db.delete(keys.DELETED, id);
+        await db.put(keys.FAV, {
+          id,
+          dateparution,
+          commercant,
+          ville,
+          familleavis_lib,
+          listeetablissements,
+          listepersonnes,
+          dateajoutee: new Date(),
+        });
+      });
+
+      _removeFromDeletedAnnouncements(id);
+
+      return true;
+    };
+
+    const _removeFromDeletedAnnouncements = (id) => {
+      deletedAnnouncements.value.results.splice(
+        deletedAnnouncements.value.results.findIndex((ann) => ann.id === id),
+        1
+      );
+    };
+
     return {
       deletedAnnouncements,
       getLastDeletedAnnouncements,
       getAllDeletedAnnouncements,
+      favAnnouncement,
     };
   }
 );

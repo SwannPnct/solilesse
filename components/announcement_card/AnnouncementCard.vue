@@ -1,62 +1,60 @@
 <script setup>
     import { TrashIcon, StarIcon, CaretDownIcon, CaretUpIcon } from '@radix-icons/vue'
+    import useComputedAnnouncement from '~/composables/useComputedAnnouncement';
 
     const announcements = useAnnouncements()
-   const props = defineProps(['announcement']);
+    const props = defineProps(['announcement']);
 
-   const clicked = ref(false)
-   const li = ref(null)
+    const clicked = ref(false)
+    const li = ref(null)
 
-   const establishment = computed(() => JSON.parse(props.announcement.listeetablissements))
+    const { address, name, activity, actors } = useComputedAnnouncement(props.announcement)
 
-   onMounted(() => {
-    document.addEventListener('click', (e) => {
-        if(!li.value?.contains(e.target) && clicked.value) {
-            clicked.value = false;
-        }
+    onMounted(() => {
+        document.addEventListener('click', (e) => {
+            if(!li.value?.contains(e.target) && clicked.value) {
+                clicked.value = false;
+            }
+        })
     })
-   })
 
-   const onItemClick = () => {
+    const onItemClick = () => {
         clicked.value = !clicked.value
         li.value.scrollIntoView({
             behavior: 'smooth',
             block: 'center'
         })
-   }
+    }
 
-   const onItemDelete = async (e) => {
-    e.stopPropagation();
-    await announcements.deleteAccouncement(props.announcement)
-   }
+    const onItemDelete = async (e) => {
+        e.stopPropagation();
+        await announcements.deleteAccouncement(props.announcement)
+    }
 
-   const onItemFav = async (e) => {
-    e.stopPropagation();
-    await announcements.favAnnouncement(props.announcement)
-   }
-
-   const buildAddress = (adressObj) => {
-    return Object.values(adressObj).join(' ')
-   }
+    const onItemFav = async (e) => {
+        e.stopPropagation();
+        await announcements.favAnnouncement(props.announcement)
+    }
 </script>
 
 <template>
     <li ref="li" :class="'self-start w-[350px] h-fit'" @click="onItemClick">
         <Card class="size-full transition-all hover:shadow-lg cursor-pointer overflow-hidden">
             <CardHeader>
-                <CardTitle class="text-lg">{{ announcement.commercant }}</CardTitle>
+                <CardTitle class="text-lg">{{ name }}</CardTitle>
                 <CardDescription>{{ announcement.id }}</CardDescription>
             </CardHeader>
             <CardContent class="announcement__card-content">
                 <p><span>Date de parution:</span> {{ announcement.dateparution }}</p>
                 <p><span>Ville:</span> {{  announcement.ville }}</p>
                 <p><span>Famille:</span> {{ announcement.familleavis_lib }}</p>
-                <p :class="clicked ? 'line-clamp-none' : 'line-clamp-4'"><span>Activité:</span> {{ establishment.etablissement.activite }}</p>
+                <p :class="clicked ? 'line-clamp-none' : 'line-clamp-4'"><span>Activité:</span> {{ activity }}</p>
 
 
                 <div v-show="clicked" class="mt-4">
                     <p><span>Type:</span> {{ announcement.typeavis_lib }}</p>
-                    <p v-if="!!establishment.etablissement.adresse"><span>Adresse:</span> {{ buildAddress(establishment.etablissement.adresse) }}</p>
+                    <p v-if="!!address"><span>Adresse:</span> {{ address }}</p>
+                    <p v-if="!!actors"><span>Acteurs:</span> {{ actors }}</p>
                 </div>
             </CardContent>
             <CardFooter class="flex flex-col gap-4">

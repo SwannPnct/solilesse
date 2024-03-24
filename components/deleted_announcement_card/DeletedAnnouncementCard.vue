@@ -1,15 +1,29 @@
 <script setup>
+    import { StarIcon } from '@radix-icons/vue';
+
+    const deletedAnnouncements = useDeletedAnnouncements()
     const props = defineProps(['announcement']);
+    const {name} = useComputedAnnouncement(props.announcement)
+
+    const onItemFav = async (e) => {
+        e.stopPropagation();
+        await deletedAnnouncements.favAnnouncement(props.announcement)
+    }
 </script>
 
 <template>
-    <Card class="bg-gray-100">
+    <li>
+        <Card class="bg-gray-100">
         <CardContent class="flex justify-between items-center p-6">
-                <CardTitle class="text-lg">{{ announcement.commercant }}</CardTitle>
+                <CardTitle class="text-lg">{{ name }}</CardTitle>
                 <CardDescription>{{ announcement.id }}</CardDescription>
                 <div>{{ announcement.dateparution }}</div>
                 <div>{{ announcement.ville }}</div>
                 <div>{{ announcement.familleavis_lib }}</div>
+                <Button @click="onItemFav" variant="outline" title="Ajouter aux favories" class="block border-green-500 text-green-500 hover:bg-green-100 hover:text-green-600">
+                    <StarIcon />
+                </Button>
             </CardContent>
         </Card>
+    </li>
 </template>
