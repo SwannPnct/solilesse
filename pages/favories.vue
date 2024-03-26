@@ -15,7 +15,15 @@
 <template>
     <div class="mt-8">
         <div v-if="!!favAnnouncements.favAnnouncements.total" class="space-y-4 text-center">
-           {{ favAnnouncements.favAnnouncements }}
+            <TransitionGroup name="list" tag="ul" class="flex flex-col gap-4 relative">
+                <FavAnnouncementCard v-for="announcement in favAnnouncements.favAnnouncements.results" :announcement :key="announcement.id"/>
+            </TransitionGroup>
+           <Button 
+                class="!mt-12"
+                v-if="favAnnouncements.favAnnouncements.total > limit && favAnnouncements.favAnnouncements.results.length <= limit" 
+                @click="onLoadMore">
+                    Charger toutes les annonces mises en favori
+            </Button>
         </div>
         <div v-else class="text-center">
             Vous n'avez pas encore mis d'annonces en favori.

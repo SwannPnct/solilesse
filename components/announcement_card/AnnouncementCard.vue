@@ -38,8 +38,8 @@
 </script>
 
 <template>
-    <li ref="li" :class="'self-start w-[350px] h-fit'" @click="onItemClick">
-        <Card class="size-full transition-all hover:shadow-lg cursor-pointer overflow-hidden">
+    <li ref="li" :class="`self-start w-[350px] h-fit rounded-xl ring-blue-200 ring-offset-2 ${clicked ? 'ring' : ''}`" @click="onItemClick">
+        <Card :class="`size-full transition-all ${clicked ? '' : 'hover:shadow-lg'} cursor-pointer overflow-hidden`">
             <CardHeader>
                 <CardTitle class="text-lg">{{ name }}</CardTitle>
                 <CardDescription>{{ announcement.id }}</CardDescription>
