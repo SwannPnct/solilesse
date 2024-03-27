@@ -15,9 +15,9 @@
 <template>
     <div class="mt-8">
         <div v-if="!!favAnnouncements.favAnnouncements.total" class="space-y-4 text-center">
-            <TransitionGroup name="list" tag="ul" class="flex flex-col gap-4 relative">
+            <ul class="flex flex-col gap-4">
                 <FavAnnouncementCard v-for="announcement in favAnnouncements.favAnnouncements.results" :announcement :key="announcement.id"/>
-            </TransitionGroup>
+            </ul>
            <Button 
                 class="!mt-12"
                 v-if="favAnnouncements.favAnnouncements.total > limit && favAnnouncements.favAnnouncements.results.length <= limit" 

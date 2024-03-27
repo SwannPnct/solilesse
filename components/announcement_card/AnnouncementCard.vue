@@ -34,7 +34,7 @@
                 <CardTitle class="text-lg">{{ name }}</CardTitle>
                 <CardDescription>{{ announcement.id }}</CardDescription>
             </CardHeader>
-            <CardContent class="announcement__card-content">
+            <CardContent class="[&_span]:font-semibold">
                 <p><span>Date de parution:</span> {{ announcement.dateparution }}</p>
                 <p><span>Ville:</span> {{  announcement.ville }}</p>
                 <p><span>Famille:</span> {{ announcement.familleavis_lib }}</p>
@@ -63,9 +63,3 @@
         </Card>
     </li>
 </template>
-
-<style scoped>
-    .announcement__card-content p span {
-        @apply font-semibold;
-    }
-</style>
