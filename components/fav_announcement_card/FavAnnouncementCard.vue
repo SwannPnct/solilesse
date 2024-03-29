@@ -9,6 +9,25 @@
     const onUpdateOpen = (isOpen) => {
         if(!isOpen && showContactForm.value) showContactForm.value = false
     }
+
+    const status = computed(() => {
+        if(!props.announcement.contacts?.length) {
+            return {
+                color: 'text-red-500',
+                text: "Pas de contacts."
+            }
+        }
+        if(props.announcement.contacts.find((contact) => contact.type === "Interlocution")) {
+            return {
+                color: 'text-green-500',
+                text: "Interlocution."
+            }
+        }
+        return {
+            color: 'text-orange-500',
+            text: "Essai de contact."
+        }
+    })
 </script>
 
 <template>
@@ -25,19 +44,19 @@
                     </CardContent>
                     <CardContent class="flex items-center justify-center p-6 gap-4">
                         <h4 class="text-lg font-semibold">Status:</h4>
-                        <div>bla bla</div>
+                        <div :class="status.color">{{ status.text }}</div>
                     </CardContent>
                 </Card>
             </li>
         </DialogTrigger>
         <DialogContent>
-            <DialogHeader>
+            <DialogHeader class="border-b border-black py-4">
                 <DialogTitle class="text-2xl">{{ name }}</DialogTitle>
                 <DialogDescription>
                     {{ announcement.id }}
                 </DialogDescription>
             </DialogHeader>
-            <div class="overflow-y-auto">
+            <div class="overflow-y-auto pt-4 px-8">
                 <div class="[&_span]:font-semibold border border-gray-300 p-3 rounded-lg">
                     <h4 class="font-semibold text-lg mb-3">Détails</h4>
                     <p><span>Date de parution:</span> {{ announcement.dateparution }}</p>
@@ -54,14 +73,12 @@
                             <PlusIcon class="size-5" />
                         </Button>
                     </div>
-                    <FavAnnouncementCardForm v-if="showContactForm" @cancel="showContactForm = false" :announcement-id="announcement.id"/>
+                    <FavAnnouncementCardForm v-if="showContactForm" @close="showContactForm = false" @cancel="showContactForm = false" :announcement-id="announcement.id"/>
                     <div v-if="!announcement.contacts?.length && !showContactForm">
                         Pas d'interactions.
                     </div>
                     <ul v-else class="space-y-4 w-full">
-                        <li v-for="(contact, index) in announcement.contacts" :key="index" class="block space-y-4 w-full bg-white border border-gray-300 rounded-lg p-4">
-                            {{ contact.type }}
-                        </li>
+                        <FavAnnouncementCardContact v-for="(contact, index) in announcement.contacts" :key="index" :contact :index :announcement />
                     </ul>
                 </div>
             </div>
