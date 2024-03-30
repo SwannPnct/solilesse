@@ -27,6 +27,34 @@ export const useFavAnnouncements = defineStore("favAnnouncements", () => {
     });
   };
 
+  const deleteAnnouncement = async ({
+    id,
+    dateparution,
+    commercant,
+    ville,
+    familleavis_lib,
+    listeetablissements,
+    listepersonnes,
+  }) => {
+    await handleDB(async (db, keys) => {
+      await db.delete(keys.FAV, id);
+      await db.put(keys.DELETED, {
+        id,
+        dateparution,
+        commercant,
+        ville,
+        familleavis_lib,
+        listeetablissements,
+        listepersonnes,
+        datesupprimee: new Date(),
+      });
+    });
+
+    _removeFromFavAnnouncements(id);
+
+    return true;
+  };
+
   const addContactsFavAnnouncement = async (id, contact) => {
     await handleDB(async (db, keys) => {
       const announcement = await db.get(keys.FAV, id);
@@ -73,11 +101,19 @@ export const useFavAnnouncements = defineStore("favAnnouncements", () => {
     );
   };
 
+  const _removeFromFavAnnouncements = (id) => {
+    favAnnouncements.value.results.splice(
+      favAnnouncements.value.results.findIndex((ann) => ann.id === id),
+      1
+    );
+  };
+
   return {
     favAnnouncements,
     getLastFavAnnouncements,
     getAllFavAnnouncements,
     addContactsFavAnnouncement,
     removeContactsFavAnnouncement,
+    deleteAnnouncement,
   };
 });

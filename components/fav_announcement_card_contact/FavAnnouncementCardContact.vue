@@ -59,7 +59,7 @@
             </p>
         </div>
         <div>
-            <Button @click="onDelete" variant="outline" title="Supprimer" class="border-red-500 text-red-500 hover:bg-red-100 hover:text-red-600">
+            <Button @click="onDelete" variant="outline" title="Supprimer interlocution" class="border-red-500 text-red-500 hover:bg-red-100 hover:text-red-600">
                 <TrashIcon />
             </Button>
         </div>

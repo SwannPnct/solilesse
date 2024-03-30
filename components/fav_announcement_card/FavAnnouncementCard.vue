@@ -1,8 +1,10 @@
 <script setup>
     import { PlusIcon } from '@radix-icons/vue'
+    import { TrashIcon } from 'lucide-vue-next';
 
     const props = defineProps(['announcement']);
     const { address, name, activity, actors } = useComputedAnnouncement(props.announcement)
+    const favAnnouncements = useFavAnnouncements()
 
     const showContactForm = ref(false)
 
@@ -28,6 +30,10 @@
             text: "Essai de contact."
         }
     })
+
+    const onDelete = async () => {
+        await favAnnouncements.deleteAnnouncement(props.announcement)
+    }
 </script>
 
 <template>
@@ -50,11 +56,18 @@
             </li>
         </DialogTrigger>
         <DialogContent>
-            <DialogHeader class="border-b border-black py-4">
-                <DialogTitle class="text-2xl">{{ name }}</DialogTitle>
-                <DialogDescription>
-                    {{ announcement.id }}
-                </DialogDescription>
+            <DialogHeader class="border-b border-black py-4 flex flex-row justify-between">
+                <div>
+                    <DialogTitle class="text-2xl">{{ name }}</DialogTitle>
+                    <DialogDescription>
+                        {{ announcement.id }}
+                    </DialogDescription>
+                </div>
+                <div class="mr-12">
+                    <Button @click="onDelete" variant="outline" title="Supprimer annonce" class="border-red-500 text-red-500 hover:bg-red-100 hover:text-red-600">
+                        <TrashIcon />
+                    </Button>
+                </div>
             </DialogHeader>
             <div class="overflow-y-auto pt-4 px-8">
                 <div class="[&_span]:font-semibold border border-gray-300 p-3 rounded-lg">
