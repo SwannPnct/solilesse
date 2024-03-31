@@ -5,9 +5,9 @@
    const path = computed(() => route.path)
 
    const links = ref([
-      ["/annonces", "Annonces"],
-      ["/supprimees", "Supprimées"],
-      ["/favories", "Favories"]
+      ["/", "Annonces"],
+      ["supprimees", "Supprimées"],
+      ["favories", "Favories"]
       ].map(mapLinks))
 
    watch([query, fullPath, path], () => {
@@ -15,9 +15,9 @@
    })
 
    function mapLinks(link) {
-      if(link[0].includes(path.value) && path.value !== "/") {
+      if(link[0].includes(path.value) || (link[0] === "/" && path.value === "/")) {
             return [fullPath.value, link[1]]
-         }
+      }
          return [...link]
    }
 </script>
