@@ -1,10 +1,18 @@
 <script setup>
+    import { startFavTour } from '~/lib/tourguide';
+
     const favAnnouncements = useFavAnnouncements()
 
     const limit = 100;
 
     onMounted(async () => {
         await favAnnouncements.getLastFavAnnouncements({limit})
+    })
+
+    watchEffect(() => {
+        if(favAnnouncements.favAnnouncements.total !== 0) {
+            startFavTour()
+        }
     })
 
     const onLoadMore = async () => {
@@ -16,7 +24,7 @@
     <div class="mt-8">
         <div v-if="!!favAnnouncements.favAnnouncements.total" class="space-y-4 text-center">
             <ul class="flex flex-col gap-4">
-                <FavAnnouncementCard v-for="announcement in favAnnouncements.favAnnouncements.results" :announcement :key="announcement.id"/>
+                <FavAnnouncementCard v-for="(announcement, index) in favAnnouncements.favAnnouncements.results" :announcement :key="announcement.id" :index/>
             </ul>
            <Button 
                 class="!mt-12"

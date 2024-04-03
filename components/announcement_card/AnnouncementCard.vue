@@ -3,7 +3,7 @@
     import useComputedAnnouncement from '~/composables/useComputedAnnouncement';
 
     const announcements = useAnnouncements()
-    const props = defineProps(['announcement']);
+    const props = defineProps(['announcement', 'index']);
 
     const li = ref(null)
 
@@ -28,7 +28,7 @@
 </script>
 
 <template>
-    <li tabindex="0" ref="li" class="group self-start w-[350px] h-fit rounded-xl ring-blue-200 ring-offset-2 focus:ring" @click="onItemClick">
+    <li :id="index === 0 ? 'tour-home-2' : undefined" tabindex="0" ref="li" class="group self-start w-[350px] h-fit rounded-xl ring-blue-200 ring-offset-2 focus:ring" @click="onItemClick">
         <Card :class="`size-full transition-all hover:shadow-lg group-focus:shadow-none cursor-pointer overflow-hidden`">
             <CardHeader>
                 <CardTitle class="text-lg">{{ name }}</CardTitle>
@@ -47,7 +47,7 @@
                 </div>
             </CardContent>
             <CardFooter class="flex flex-col gap-4">
-                <div class="w-full flex justify-end gap-4">
+                <div class="w-full flex justify-end gap-4" :id="index === 0 ? 'tour-home-3' : undefined">
                     <Button @click="onItemDelete" variant="outline" title="Supprimer" class="border-red-500 text-red-500 hover:bg-red-100 hover:text-red-600">
                         <TrashIcon />
                     </Button>

@@ -1,7 +1,15 @@
 <script setup>
-import useCurrentPage from '~/composables/useCurrentPage';
+    import "@sjmc11/tourguidejs/src/scss/tour.scss"
+    import { startHomeTour } from '../lib/tourguide';
+    import useCurrentPage from '~/composables/useCurrentPage';
 
     const announcements = useAnnouncements();
+
+    watchEffect(async () => {
+        if(!!announcements.announcements.total) {
+            startHomeTour()
+        }
+    })
 
     const route = useRoute()
     const city = computed(() => route.query.city)
@@ -57,9 +65,10 @@ import useCurrentPage from '~/composables/useCurrentPage';
         </div>
         <TransitionGroup v-else name="list" tag="ul" class="relative flex flex-wrap gap-16 items-center">
             <AnnouncementCard 
-                v-for="announcement in announcements.announcements.pages[currentPage]" 
+                v-for="(announcement, index) in announcements.announcements.pages[currentPage]" 
                 :key="announcement.id" 
-                :announcement />
+                :announcement
+                :index />
         </TransitionGroup>
         <Paginator :limit/>
     </div>

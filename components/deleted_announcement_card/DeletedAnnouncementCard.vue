@@ -2,7 +2,7 @@
     import { StarIcon } from '@radix-icons/vue';
 
     const deletedAnnouncements = useDeletedAnnouncements()
-    const props = defineProps(['announcement']);
+    const props = defineProps(['announcement', 'index']);
     const {name} = useComputedAnnouncement(props.announcement)
 
     const onItemFav = async (e) => {
@@ -20,9 +20,11 @@
                 <div>{{ announcement.dateparution }}</div>
                 <div>{{ announcement.ville }}</div>
                 <div>{{ announcement.familleavis_lib }}</div>
-                <Button @click="onItemFav" variant="outline" title="Ajouter aux favories" class="block border-green-500 text-green-500 hover:bg-green-100 hover:text-green-600">
-                    <StarIcon />
-                </Button>
+                <div :id="index === 0 ? 'tour-deleted-1' : undefined">
+                    <Button @click="onItemFav" variant="outline" title="Ajouter aux favories" class="border-green-500 text-green-500 hover:bg-green-100 hover:text-green-600">
+                        <StarIcon />
+                    </Button>
+                </div>
             </CardContent>
         </Card>
     </li>

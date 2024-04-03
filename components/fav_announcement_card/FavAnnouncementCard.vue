@@ -2,7 +2,7 @@
     import { PlusIcon } from '@radix-icons/vue'
     import { TrashIcon } from 'lucide-vue-next';
 
-    const props = defineProps(['announcement']);
+    const props = defineProps(['announcement', 'index']);
     const { address, name, activity, actors } = useComputedAnnouncement(props.announcement)
     const favAnnouncements = useFavAnnouncements()
 
@@ -39,7 +39,7 @@
 <template>
     <Dialog @update:open="onUpdateOpen">
         <DialogTrigger class="cursor-pointer ring-offset-2 ring-blue-200 rounded-xl focus:ring">
-            <li>
+            <li :id="index === 0 ? 'tour-fav-1' : undefined">
                 <Card class="hover:shadow-md">
                     <CardContent class="flex justify-between items-center p-6 gap-2">
                         <CardTitle class="text-lg">{{ name }}</CardTitle>
@@ -48,9 +48,9 @@
                         <div>{{ announcement.ville }}</div>
                         <div>{{ announcement.familleavis_lib }}</div>
                     </CardContent>
-                    <CardContent class="flex items-center justify-center p-6 gap-4">
-                        <h4 class="text-lg font-semibold">Status:</h4>
-                        <div :class="status.color">{{ status.text }}</div>
+                    <CardContent class="flex items-center justify-center p-6 gap-4" :id="index === 0 ? 'tour-fav-2' : undefined">
+                            <h4 class="text-lg font-semibold">Status:</h4>
+                            <div :class="status.color">{{ status.text }}</div>
                     </CardContent>
                 </Card>
             </li>

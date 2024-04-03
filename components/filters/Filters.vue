@@ -42,7 +42,7 @@
 </script>
 
 <template>
-    <div class="mb-16">
+    <div class="mb-16" id="tour-home-1">
         <h2 class="mb-4">Filters</h2>
         <div class="flex gap-12">
             <Multiselect 

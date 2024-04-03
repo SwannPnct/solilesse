@@ -24,7 +24,7 @@
 
 <template>
      <div class="container relative">
-         <div class="flex py-6 items-center">
+         <div class="flex py-6 items-center" id="tour-home-4">
             <NuxtLink class="block flex gap-4 items-center cursor-pointer" to="/">
                <img class="size-10" src="~/assets/images/logo.webp" alt="Solilesse logo"/>
                <h1 class="font-semibold text-xl">
