@@ -39,6 +39,7 @@
     "shadcn-nuxt": "^0.10.0"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.6.1"
+    "@rollup/rollup-linux-x64-gnu": "4.6.1",
+    "@oxc-parser/binding-linux-x64-gnu": "0.8.0"
   }
 }
