@@ -5,9 +5,9 @@
    const path = computed(() => route.path)
 
    const links = ref([
-      ["/", "Annonces"],
-      ["supprimees", "Supprimées"],
-      ["favories", "Favories"]
+      ["/", "Annonces", "home"],
+      ["supprimees", "Supprimées", "deleted"],
+      ["favories", "Favories", "fav"]
       ].map(mapLinks))
 
    watch([query, fullPath, path], () => {
@@ -15,11 +15,24 @@
    })
 
    function mapLinks(link) {
-      if(link[0].includes(path.value) || (link[0] === "/" && path.value === "/")) {
-            return [fullPath.value, link[1]]
+      if(path.value === "/" && link[0].startsWith("/")) {
+         return [fullPath.value, ...link.slice(1)]
       }
          return [...link]
    }
+
+   const tourGuideGroup = computed(() => {
+      switch (path.value) {
+         case "/":
+            return links.value[0][2]
+         case "/supprimees":
+            return links.value[1][2]
+         case "/favories":
+            return links.value[2][2]
+         default:
+            break;
+      }
+   })
 </script>
 
 <template>
@@ -35,6 +48,9 @@
                <NuxtLink v-for="link in links" exactActiveClass="underline" class="block hover:underline" :to="link[0]">
                   {{ link[1] }}
                </NuxtLink>
+            </div>
+            <div>
+               <TourGuideTrigger :group="tourGuideGroup"/>
             </div>
          </div>
          <div class="container py-12">
