@@ -42,9 +42,9 @@
 </script>
 
 <template>
-     <div class="container relative">
+     <div class="container relative min-h-screen flex flex-col">
          <div class="flex py-6 items-center" id="tour-home-4">
-            <NuxtLink class="block flex gap-4 items-center cursor-pointer" to="/">
+            <NuxtLink class="flex gap-4 items-center cursor-pointer" to="/">
                <img class="size-10" src="~/assets/images/logo.webp" alt="Solilesse logo"/>
                <h1 class="font-semibold text-xl">
                   Solilesse
@@ -61,6 +61,9 @@
          </div>
          <div class="container py-12">
             <slot />
+         </div>
+         <div class="container mt-auto pt-8 pb-12 text-center text-neutral-500 text-sm">
+            &#xA9; {{ new Date().getFullYear() }} <a href="https://www.fogosoft.eu" target="_blank" class="hover:underline">fogosoft</a> All Rights Reserved.
          </div>
      </div>
 </template>
