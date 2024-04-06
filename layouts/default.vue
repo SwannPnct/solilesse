@@ -1,5 +1,9 @@
 <script setup>
    const route = useRoute()
+   const announcements = useAnnouncements();
+   const favAnnouncements = useFavAnnouncements();
+   const deletedAnnouncements = useDeletedAnnouncements();
+
    const query = computed(() => route.query)
    const fullPath = computed(() => route.fullPath)
    const path = computed(() => route.path)
@@ -9,17 +13,6 @@
       ["supprimees", "Supprimées", "deleted"],
       ["favories", "Favories", "fav"]
       ].map(mapLinks))
-
-   watch([query, fullPath, path], () => {
-      links.value = links.value.map(mapLinks)
-   })
-
-   function mapLinks(link) {
-      if(path.value === "/" && link[0].startsWith("/")) {
-         return [fullPath.value, ...link.slice(1)]
-      }
-         return [...link]
-   }
 
    const tourGuideGroup = computed(() => {
       switch (path.value) {
@@ -33,6 +26,19 @@
             break;
       }
    })
+
+   const shouldShowTourGuideTrigger = computed(() => (tourGuideGroup.value === "home" && !!announcements.announcements.total) || (tourGuideGroup.value === "fav" && !!favAnnouncements.favAnnouncements.total) || tourGuideGroup.value === "deleted" && !!deletedAnnouncements.deletedAnnouncements.total)
+
+   watch([query, fullPath, path], () => {
+      links.value = links.value.map(mapLinks)
+   })
+
+   function mapLinks(link) {
+      if(path.value === "/" && link[0].startsWith("/")) {
+         return [fullPath.value, ...link.slice(1)]
+      }
+         return [...link]
+   }
 </script>
 
 <template>
@@ -50,7 +56,7 @@
                </NuxtLink>
             </div>
             <div>
-               <TourGuideTrigger :group="tourGuideGroup"/>
+               <TourGuideTrigger v-if="shouldShowTourGuideTrigger" :group="tourGuideGroup"/>
             </div>
          </div>
          <div class="container py-12">
