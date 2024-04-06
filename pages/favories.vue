@@ -1,6 +1,11 @@
 <script setup>
     import { startFavTour } from '~/lib/tourguide';
 
+    useSeoMeta({
+        title: 'Solilesse - Favories',
+        description: 'Liste des annonces commerciales mises en favori.',
+    })
+
     const favAnnouncements = useFavAnnouncements()
 
     const limit = 100;

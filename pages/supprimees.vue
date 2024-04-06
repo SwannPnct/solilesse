@@ -1,6 +1,11 @@
 <script setup>
     import { startDeletedTour } from '~/lib/tourguide';
 
+    useSeoMeta({
+        title: 'Solilesse - Supprimées',
+        description: 'Liste des annonces commerciales supprimées.',
+    })
+
     const deletedAnnouncements = useDeletedAnnouncements();
 
     const limit = 5;

@@ -3,6 +3,11 @@
     import { startHomeTour } from '../lib/tourguide';
     import useCurrentPage from '~/composables/useCurrentPage';
 
+    useSeoMeta({
+        title: 'Solilesse',
+        description: 'Liste des annonces commerciales françaises. La prospection rendue plus facile!',
+    })
+
     const announcements = useAnnouncements();
 
     watchEffect(async () => {
